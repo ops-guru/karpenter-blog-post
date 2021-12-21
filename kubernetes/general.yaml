@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: general-workloads
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: general-workloads
+  template:
+    metadata:
+      labels:
+        app: general-workloads
+    spec:
+      nodeSelector:
+        managed-by: karpenter
+      containers:
+        - name: general-workloads
+          image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+          resources:
+            requests:
+              cpu: 1
+              memory: 100Mi
+            limits:
+              cpu: 2
+              memory: 100Mi

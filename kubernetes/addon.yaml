@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: addon
+  template:
+    metadata:
+      labels:
+        app: addon
+    spec:
+      nodeSelector:
+        purpose: addons
+      tolerations:
+        - key: opsguru.io/addons
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: addon
+          image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+          resources:
+            requests:
+              cpu: 1
+              memory: 100Mi
+            limits:
+              cpu: 2
+              memory: 100Mi
